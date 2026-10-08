@@ -240,7 +240,7 @@ ul[role="list"] { list-style: none; margin: 0; padding: 0; }
 }
 .hero-art { position: absolute; inset: 0; display: grid; place-items: center; z-index: -1; pointer-events: none; }
 .hero-mandala {
-  width: min(82vw, 680px); height: auto; opacity: 0.17;
+  width: min(82vw, 680px); height: auto; opacity: 0.13;
   animation: mandala-spin 160s linear infinite, art-in 1.8s ease-out both;
 }
 .ring {
@@ -267,7 +267,7 @@ ul[role="list"] { list-style: none; margin: 0; padding: 0; }
 .page-head .hero-actions { margin-top: 20px; }
 
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@keyframes art-in { from { opacity: 0; transform: scale(0.92); } to { opacity: 0.17; transform: scale(1); } }
+@keyframes art-in { from { opacity: 0; transform: scale(0.92); } to { opacity: 0.13; transform: scale(1); } }
 @keyframes mandala-spin { to { rotate: 360deg; } }
 @keyframes ring-pulse {
   0%   { transform: scale(0.45); opacity: 0; }
@@ -487,7 +487,7 @@ ul[role="list"] { list-style: none; margin: 0; padding: 0; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  .hero-mandala { opacity: 0.17; }
+  .hero-mandala { opacity: 0.13; }
   .ring { display: none; }
 }
 

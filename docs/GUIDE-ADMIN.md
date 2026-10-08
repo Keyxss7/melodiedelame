@@ -1,48 +1,30 @@
 # Guide de mise en route
 
-Trois étapes, une seule fois : (1) pousser le nouveau site, (2) passer GitHub Pages en mode
-« GitHub Actions », (3) créer le jeton et installer l’admin sur ton téléphone.
+Les étapes 1 et 2 (mise en ligne du nouveau site, bascule de GitHub Pages) sont faites.
+Il reste, une seule fois : créer le jeton (étape 3) et installer l’admin sur ton téléphone (étape 4).
 
 ---
 
-## 1. Pousser le nouveau site sur GitHub
+## 1. Le nouveau site est en ligne ✓ (fait le 8 octobre 2026)
 
-Dans le dossier du projet, les fichiers de l’ancien site sont encore là. **Supprime-les** (ils
-sont tous recréés par le build) :
+- Le dépôt `Keyxss7/melodiedelame` contient le nouveau projet, les anciens fichiers ont été retirés.
+- Le workflow `.github/workflows/deploy.yml` est en place (une copie de référence reste dans `docs/deploy.yml`).
+- GitHub Pages est configuré sur la source **GitHub Actions** ; le premier déploiement a réussi.
+- Ton clone local est dans `Desktop\melodiedelame-main\repo` (ouvert dans GitHub Desktop). C'est là qu'il faut
+  travailler désormais ; le reste du dossier `melodiedelame-main` peut être supprimé.
 
-```
-index.html  prestations.html  formations.html  mentions-legales.html
-politiques-de-confidentialites.html  style.css  logo.png  images/   (l'ancien dossier à la racine)
-```
-
-> Les photos ont été converties en WebP dans `src/images/`. Les originaux (PNG/JPG de 2–3 Mo)
-> ne servent plus : le site passe de 16 Mo à moins de 2 Mo d'images.
-
-**Place le workflow GitHub Actions** (je n’ai pas pu écrire dans `.github/` depuis ici) : déplace
-`docs/deploy.yml` vers **`.github/workflows/deploy.yml`** (crée les dossiers). Dans PowerShell :
-
-```powershell
-New-Item -ItemType Directory -Force .github\workflows | Out-Null
-Move-Item docs\deploy.yml .github\workflows\deploy.yml
-```
-
-Puis, dans un terminal :
+Pour une modification depuis le PC : édite dans `repo`, puis dans un terminal :
 
 ```bash
 node build.js        # vérifie que tout se génère (dist/)
 npm test             # 11 tests doivent passer
-git add -A
-git commit -m "Nouveau site : génération statique + admin mobile"
-git push
 ```
 
-## 2. GitHub Pages → source « GitHub Actions »
+puis commit + push (GitHub Desktop ou `git`). La publication est automatique (≈ 1 min, onglet **Actions**).
 
-Sur github.com, dans le dépôt : **Settings → Pages → Build and deployment → Source** :
-choisis **GitHub Actions** (au lieu de « Deploy from a branch »).
+## 2. GitHub Pages ✓
 
-Dès le push de l’étape 1, l’onglet **Actions** montre le workflow « Build & deploy du site ».
-Quand il est vert, melodiedelame.fr affiche le nouveau site (le CNAME est conservé dans `src/static/`).
+Déjà fait : **Settings → Pages → Source : GitHub Actions**. Rien à toucher.
 
 ## 3. Créer le jeton d’accès (≈ 2 min)
 
