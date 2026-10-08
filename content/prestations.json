@@ -113,23 +113,6 @@
       "prix": "",
       "lienReservation": "",
       "visible": true
-    },
-    {
-      "id": "test",
-      "titre": "Test",
-      "sousTitre": "test",
-      "image": "images/uploads/test-muzlqght.webp",
-      "imageAlt": "Test",
-      "description": "Je suis en train de faire un test Je suis en train de faire un test vJe suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test v",
-      "benefices": [
-        "Test 1",
-        "test 33",
-        "test 2"
-      ],
-      "duree": "",
-      "prix": "",
-      "lienReservation": "",
-      "visible": true
     }
   ]
 }
