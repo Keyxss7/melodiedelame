@@ -14,20 +14,19 @@
       "puces": [
         "Vibrations",
         "Souffle",
-        "Toucher conscient",
         "Silence"
       ],
       "image": "images/uploads/accueil-une-approche-holistique-et-vibratoire-muzmjs88.webp",
       "imageAlt": "Logo Mélodie de l’Âme : arbre de vie, chouette et cœur",
       "imageContain": false,
       "paragraphes": [
-        "Mélodie de l’Âme est née d’une écoute profonde du vivant et d’une conviction intime : chaque être porte en lui sa propre note juste. Nous sommes faits de vibrations, de rythmes, de souffles et de silences.",
+        "Mélodie de l’Âme est née d’une écoute profonde du vivant et d’une conviction intime : chaque être porte en lui sa propre note qui lui est juste. Nous sommes faits de vibrations, de rythmes, de souffles et de silences.",
         "Corps, émotions, pensées et énergie interagissent en permanence, comme les instruments d’une même symphonie. Lorsque l’un de ces espaces se désaccorde, c’est l’ensemble de notre équilibre intérieur qui s’en trouve perturbé.",
-        "À travers les sons thérapeutiques, les vibrations des instruments et le toucher conscient, je vous accompagne dans un processus de réaccordage intérieur, en douceur et dans le respect de votre rythme. Chaque séance devient une expérience unique, une parenthèse hors du temps, façonnée selon votre sensibilité, votre histoire et ce que vous êtes prêt(e) à accueillir ou à transformer."
+        "À travers les sons thérapeutiques, les vibrations des instruments et mon magnétisme, je vous accompagne dans un processus de « ré-accordage» intérieur, en douceur et surtout, dans le respect de votre rythme. Chaque séance devient une expérience unique, une parenthèse hors du temps, façonnée selon votre sensibilité, votre histoire et ce que vous êtes prêt.e à accueillir ou bien à transformer."
       ],
       "encadre": {
-        "titre": "Ici, rien n’est forcé.",
-        "texte": "Tout est accueilli. Tout est invité."
+        "titre": "Ici, rien n’est forcé...",
+        "texte": "Tout est accueilli, tout est invité."
       },
       "paragraphesApres": [
         "Mon accompagnement soutient l’intelligence naturelle du corps et de l’âme, pour vous permettre de retrouver votre rythme, votre équilibre, votre harmonie profonde… et, en essence, votre propre mélodie intérieure."
@@ -47,12 +46,12 @@
       "imageAlt": "Mélissa, praticienne en sonothérapie, tenant un bol tibétain",
       "paragraphes": [
         "Aussi loin que je me souvienne, j’ai toujours ressenti cet élan naturel d’accompagner et de soutenir celles et ceux qui m’entourent. La sonothérapie s’est imposée à moi comme une évidence : un langage universel, subtil et profond, qui s’adresse à chacun.",
-        "Je me suis d’abord formée aux bols tibétains et aux protocoles vibratoires spécifiques, avant d’enrichir ma pratique avec les gongs, le tambour, les diapasons, les soins énergétiques et la connexion au monde animal.",
+        "Je me suis d’abord formée aux bols tibétains et aux protocoles vibratoires spécifiques, avant d’enrichir ma pratique avec les gongs, le tambour chamanique, les diapasons et les soins énergétiques.",
         "Aujourd’hui, j’unis ces outils dans une approche intuitive et respectueuse, nourrie par la nature, les cycles du vivant et les traditions ancestrales."
       ],
       "encadre": {
         "titre": "Ma vision du soin",
-        "texte": "Soigner, c’est avant tout ouvrir un espace. Un espace sécurisant, doux et vivant. Un sanctuaire dans lequel vous pouvez déposer, relâcher et transformer. Les instruments sont des alliés, mais c’est votre propre sagesse intérieure qui œuvre. Mon rôle est de vous accompagner à la retrouver."
+        "texte": "Soigner c'est créer un espace sécurisant, doux et vivant. Un sanctuaire de paix, à votre image dans lequel vous pouvez déposer, relâcher et transformer. Les instruments sont des alliés, des supports,... Mais c’est votre propre sagesse intérieure qui se met à l'œuvre.\n\nMon rôle est de vous accompagner à la retrouver."
       },
       "paragraphesApres": []
     },
@@ -65,14 +64,17 @@
         "Blocages émotionnels",
         "Tensions profondes",
         "Surcharge mentale",
-        "Remise en mouvement"
+        "Douleurs",
+        "Mal-être intérieur",
+        "Stress/Anxiété",
+        "Deuil"
       ],
       "image": "images/bol.webp",
       "imageAlt": "Bol tibétain joué en plein air",
       "paragraphes": [
         "Dans un quotidien souvent rythmé par le stress, les émotions accumulées et les épreuves de la vie, il arrive que le corps et l’esprit se ferment progressivement.",
         "Certains événements, certaines tensions ou certains chocs laissent des empreintes. Elles peuvent créer des blocages — physiques, émotionnels ou plus subtils — dont l’impact n’est pas toujours conscient, mais qui se manifeste dans l’énergie, le moral ou l’élan vital.",
-        "La sonothérapie propose une approche douce et profonde pour favoriser la relaxation, le lâcher-prise, la gestion du stress et la gestion de la douleur. Grâce aux vibrations et aux fréquences d’instruments tels que les bols tibétains, les bols de cristal, le tambour ou les diapasons, le corps et le système nerveux sont invités à relâcher les tensions et à retrouver un état de détente profonde."
+        "La sonothérapie propose une approche douce et profonde pour favoriser la relaxation, le lâcher-prise, la gestion du stress, des émotions et la réduction de la douleur. Grâce aux vibrations et aux fréquences d’instruments tels que les bols tibétains, les bols de cristal, le tambour chamanique ou les diapasons, le corps et le système nerveux sont invités à relâcher les tensions et à retrouver un état de détente profonde."
       ],
       "encadre": {
         "titre": "",
@@ -96,7 +98,7 @@
   },
   "contact": {
     "titre": "Prendre rendez-vous",
-    "texte": "Les séances se déroulent sur rendez-vous. Réservez directement en ligne, ou écrivez-moi pour toute question : je vous réponds avec plaisir.",
+    "texte": "Les séances se déroulent sur rendez-vous. Réservez directement en ligne, ou écrivez-moi pour toute question, je me ferai un plaisir de vous répondre.",
     "boutonTexte": "Réserver en ligne"
   },
   "citation": "Il n’y a pas de hasard, seulement des rendez-vous."
