@@ -1,0 +1,88 @@
+{
+  "intro": {
+    "titre": "Mes prestations",
+    "sousTitre": "Chaque soin est une rencontre : un moment façonné selon votre sensibilité, votre histoire et ce que vous êtes prêt(e) à accueillir."
+  },
+  "motPerso": "Chaque soin est pour moi une rencontre sacrée. Merci de m’accorder votre confiance, de venir avec votre histoire, votre lumière et votre vécu. Ensemble, nous pouvons remettre de la fluidité, de la paix et du sens là où la vie en a parfois manqué.",
+  "rappel": "Mes soins sont un accompagnement de bien-être et d’harmonisation. Ils ne se substituent pas à un suivi médical ni aux conseils d’un professionnel de santé mais interviennent en parfaite complémentarité.",
+  "items": [
+    {
+      "id": "caresse-vibratoire",
+      "titre": "Caresse Vibratoire",
+      "sousTitre": "Un soin dédié à nos mains, ces messagères précieuses du quotidien.",
+      "description": "Par l’alliance de la réflexologie palmaire, du massage et des vibrations sonores, ce rituel invite au lâcher-prise, libère les tensions et dénoue les nœuds accumulés. Il favorise le bien-être global, la détente profonde et redonne légèreté et fluidité à nos mains, en résonance avec tout notre être.",
+      "image": "images/caresse-vibratoire.webp",
+      "imageAlt": "Soin Caresse Vibratoire : mains, bol tibétain et diapason",
+      "benefices": ["Libère les tensions", "Lâcher-prise", "Dénoue les nœuds accumulés", "Vitalité"],
+      "duree": "",
+      "prix": "",
+      "lienReservation": "",
+      "visible": true
+    },
+    {
+      "id": "ancrage-racines",
+      "titre": "Ancrage & Racines",
+      "sousTitre": "Un rituel d’ancrage qui libère les tensions, nourrit les pieds et réharmonise tout l’être.",
+      "description": "Le massage des pieds au bol Kansu, rituel ancestral qui apaise les tensions profondes, stimule l’énergie vitale et favorise un ancrage serein. Le contact du métal allié aux mouvements doux libère les nœuds intérieurs et rétablit l’équilibre. Un protocole d’harmonisation qui relie le haut et le bas, l’air et la terre, pour retrouver légèreté, stabilité et bien-être global.",
+      "image": "images/pieds.webp",
+      "imageAlt": "Rituel Ancrage & Racines : massage des pieds au bol Kansu",
+      "benefices": ["Ancrage", "Apaisement mental", "Harmonie", "Centrage"],
+      "duree": "",
+      "prix": "",
+      "lienReservation": "",
+      "visible": true
+    },
+    {
+      "id": "soin-lahochi",
+      "titre": "Soin LaHoChi",
+      "sousTitre": "Un soin énergétique doux et puissant.",
+      "description": "Ce soin aide à relâcher les tensions, à calmer le mental et à soutenir le corps dans son processus naturel d’équilibre. Il agit comme une mise au repos intérieure : les énergies se réorganisent, la respiration s’apaise et une sensation de clarté et de légèreté peut émerger.",
+      "image": "images/lahochi.webp",
+      "imageAlt": "Soin LaHoChi : apposition des mains",
+      "benefices": ["Relaxation profonde", "Vitalité", "Sérénité", "Stabilité"],
+      "duree": "",
+      "prix": "",
+      "lienReservation": "",
+      "visible": true
+    },
+    {
+      "id": "ondes-de-reves",
+      "titre": "Ondes de Rêves",
+      "sousTitre": "Une expérience unique entre lumière et sons favorisant le lâcher-prise, pour stimuler à la fois le calme intérieur et la créativité.",
+      "description": "En fermant les yeux face à la douce pulsation lumineuse, le cerveau entre naturellement dans des états de relaxation profonde, semblables à ceux de la méditation ou du rêve éveillé. Associée aux vibrations sonores, elle invite à un lâcher-prise total, stimule l’imaginaire et ouvre l’accès à un espace intérieur de calme. Un voyage enivrant, entre rêve et conscience, pour explorer de nouvelles dimensions de soi.",
+      "image": "images/onde-de-reve.webp",
+      "imageAlt": "Séance Ondes de Rêves : relaxation face à une lampe de luminothérapie",
+      "benefices": ["Lâcher-prise", "Amélioration du sommeil", "Détente profonde"],
+      "duree": "",
+      "prix": "",
+      "lienReservation": "",
+      "visible": true
+    },
+    {
+      "id": "relaxation-sonore",
+      "titre": "Relaxation sonore",
+      "sousTitre": "Une immersion sonore apaisante qui rééquilibre l’énergie et invite à un profond relâchement.",
+      "description": "Un voyage au cœur des vibrations. Les sons cristallins et tibétains des bols, les battements profonds du tambour et bien d’autres instruments… Cette immersion sonore apaise le mental, rééquilibre l’énergie et installe une profonde sérénité tout en favorisant l’auto-guérison. Un moment pour se recentrer, se ressourcer et retrouver l’harmonie intérieure.",
+      "image": "images/relaxation-sonore.webp",
+      "imageAlt": "Bols tibétains disposés pour une relaxation sonore",
+      "benefices": ["Pleine conscience", "Réduction du stress", "Amélioration du sommeil", "Relâchement profond"],
+      "duree": "",
+      "prix": "",
+      "lienReservation": "",
+      "visible": true
+    },
+    {
+      "id": "massage-vibratoire-signature",
+      "titre": "Massage vibratoire Signature",
+      "sousTitre": "Un moment unique où le corps devient résonance, favorisant bien-être et sérénité.",
+      "description": "Massage doux et intuitif alliant les bienfaits des fréquences sonores et mes techniques de massage. Un soin créé sur mesure avec le consultant, en fonction de ses besoins et de ses douleurs.",
+      "image": "images/soin-vibratoire.webp",
+      "imageAlt": "Instruments du massage vibratoire : bol, diapasons, maillets",
+      "benefices": ["Apaisement des maux", "Détente profonde", "Harmonisation globale", "Vitalité", "Gestion de la douleur"],
+      "duree": "",
+      "prix": "",
+      "lienReservation": "",
+      "visible": true
+    }
+  ]
+}

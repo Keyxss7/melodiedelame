@@ -1,0 +1,15 @@
+{
+  "name": "melodiedelame",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Site vitrine Mélodie de l’Âme — généré statiquement depuis content/*.json",
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js --serve",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
