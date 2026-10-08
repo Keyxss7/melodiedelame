@@ -13,7 +13,12 @@
       "description": "Par l’alliance de la réflexologie palmaire, du massage et des vibrations sonores, ce rituel invite au lâcher-prise, libère les tensions et dénoue les nœuds accumulés. Il favorise le bien-être global, la détente profonde et redonne légèreté et fluidité à nos mains, en résonance avec tout notre être.",
       "image": "images/caresse-vibratoire.webp",
       "imageAlt": "Soin Caresse Vibratoire : mains, bol tibétain et diapason",
-      "benefices": ["Libère les tensions", "Lâcher-prise", "Dénoue les nœuds accumulés", "Vitalité"],
+      "benefices": [
+        "Libère les tensions",
+        "Lâcher-prise",
+        "Dénoue les nœuds accumulés",
+        "Vitalité"
+      ],
       "duree": "",
       "prix": "",
       "lienReservation": "",
@@ -26,7 +31,12 @@
       "description": "Le massage des pieds au bol Kansu, rituel ancestral qui apaise les tensions profondes, stimule l’énergie vitale et favorise un ancrage serein. Le contact du métal allié aux mouvements doux libère les nœuds intérieurs et rétablit l’équilibre. Un protocole d’harmonisation qui relie le haut et le bas, l’air et la terre, pour retrouver légèreté, stabilité et bien-être global.",
       "image": "images/pieds.webp",
       "imageAlt": "Rituel Ancrage & Racines : massage des pieds au bol Kansu",
-      "benefices": ["Ancrage", "Apaisement mental", "Harmonie", "Centrage"],
+      "benefices": [
+        "Ancrage",
+        "Apaisement mental",
+        "Harmonie",
+        "Centrage"
+      ],
       "duree": "",
       "prix": "",
       "lienReservation": "",
@@ -39,7 +49,12 @@
       "description": "Ce soin aide à relâcher les tensions, à calmer le mental et à soutenir le corps dans son processus naturel d’équilibre. Il agit comme une mise au repos intérieure : les énergies se réorganisent, la respiration s’apaise et une sensation de clarté et de légèreté peut émerger.",
       "image": "images/lahochi.webp",
       "imageAlt": "Soin LaHoChi : apposition des mains",
-      "benefices": ["Relaxation profonde", "Vitalité", "Sérénité", "Stabilité"],
+      "benefices": [
+        "Relaxation profonde",
+        "Vitalité",
+        "Sérénité",
+        "Stabilité"
+      ],
       "duree": "",
       "prix": "",
       "lienReservation": "",
@@ -52,7 +67,11 @@
       "description": "En fermant les yeux face à la douce pulsation lumineuse, le cerveau entre naturellement dans des états de relaxation profonde, semblables à ceux de la méditation ou du rêve éveillé. Associée aux vibrations sonores, elle invite à un lâcher-prise total, stimule l’imaginaire et ouvre l’accès à un espace intérieur de calme. Un voyage enivrant, entre rêve et conscience, pour explorer de nouvelles dimensions de soi.",
       "image": "images/onde-de-reve.webp",
       "imageAlt": "Séance Ondes de Rêves : relaxation face à une lampe de luminothérapie",
-      "benefices": ["Lâcher-prise", "Amélioration du sommeil", "Détente profonde"],
+      "benefices": [
+        "Lâcher-prise",
+        "Amélioration du sommeil",
+        "Détente profonde"
+      ],
       "duree": "",
       "prix": "",
       "lienReservation": "",
@@ -65,7 +84,12 @@
       "description": "Un voyage au cœur des vibrations. Les sons cristallins et tibétains des bols, les battements profonds du tambour et bien d’autres instruments… Cette immersion sonore apaise le mental, rééquilibre l’énergie et installe une profonde sérénité tout en favorisant l’auto-guérison. Un moment pour se recentrer, se ressourcer et retrouver l’harmonie intérieure.",
       "image": "images/relaxation-sonore.webp",
       "imageAlt": "Bols tibétains disposés pour une relaxation sonore",
-      "benefices": ["Pleine conscience", "Réduction du stress", "Amélioration du sommeil", "Relâchement profond"],
+      "benefices": [
+        "Pleine conscience",
+        "Réduction du stress",
+        "Amélioration du sommeil",
+        "Relâchement profond"
+      ],
       "duree": "",
       "prix": "",
       "lienReservation": "",
@@ -78,7 +102,30 @@
       "description": "Massage doux et intuitif alliant les bienfaits des fréquences sonores et mes techniques de massage. Un soin créé sur mesure avec le consultant, en fonction de ses besoins et de ses douleurs.",
       "image": "images/soin-vibratoire.webp",
       "imageAlt": "Instruments du massage vibratoire : bol, diapasons, maillets",
-      "benefices": ["Apaisement des maux", "Détente profonde", "Harmonisation globale", "Vitalité", "Gestion de la douleur"],
+      "benefices": [
+        "Apaisement des maux",
+        "Détente profonde",
+        "Harmonisation globale",
+        "Vitalité",
+        "Gestion de la douleur"
+      ],
+      "duree": "",
+      "prix": "",
+      "lienReservation": "",
+      "visible": true
+    },
+    {
+      "id": "test",
+      "titre": "Test",
+      "sousTitre": "test",
+      "image": "images/uploads/test-muzlqght.webp",
+      "imageAlt": "Test",
+      "description": "Je suis en train de faire un test Je suis en train de faire un test vJe suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test Je suis en train de faire un test v",
+      "benefices": [
+        "Test 1",
+        "test 33",
+        "test 2"
+      ],
       "duree": "",
       "prix": "",
       "lienReservation": "",
