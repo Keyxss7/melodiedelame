@@ -64,11 +64,11 @@
     },
     {
       "id": "soin-lahochi",
-      "titre": "Soin LaHoChi",
+      "titre": "Soin LaHoChi 13ème Octave",
       "sousTitre": "Un soin énergétique doux et puissant.",
-      "description": "Ce soin aide à relâcher les tensions, à calmer le mental et à soutenir le corps dans son processus naturel d’équilibre. Il agit comme une mise au repos intérieure : les énergies se réorganisent, la respiration s’apaise et une sensation de clarté et de légèreté peut émerger.",
       "image": "images/lahochi.webp",
       "imageAlt": "Soin LaHoChi : apposition des mains",
+      "description": "Ce soin aide à relâcher les tensions, à calmer le mental et à soutenir le corps dans son processus naturel d’équilibre. Il agit comme une mise au repos intérieure : les énergies se réorganisent, la respiration s’apaise et une sensation de clarté et de légèreté peut émerger.",
       "benefices": [
         "Relaxation profonde",
         "Vitalité",
