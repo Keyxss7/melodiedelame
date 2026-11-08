@@ -26,7 +26,7 @@ tests/              ← tests du build (node --test) + test de bout en bout de l
 | --- | --- |
 | `npm run build` | génère le site dans `dist/` |
 | `npm run dev` | génère + serveur local sur http://localhost:4173 avec rebuild automatique |
-| `npm test` | lance les tests du build |
+| `npm test` | lance les tests du build (sur `tests/fixtures/content`, jamais sur le vrai contenu) |
 
 Node ≥ 20, rien à installer (`npm install` n’est pas nécessaire).
 
@@ -44,6 +44,13 @@ Node ≥ 20, rien à installer (`npm install` n’est pas nécessaire).
 - Structure d’une page : `src/templates/*.js` (template literals, `esc()` pour tout texte venant du contenu).
 - Navbar / footer / balises SEO : `src/partials/layout.js`.
 - Après modification : `npm run dev` pour prévisualiser, puis commit → publication automatique.
+
+## Tests : règle importante
+
+Les tests tournent avant **chaque** publication. Ils ne doivent jamais dépendre du vrai contenu
+(`content/*.json`), que l’admin modifie librement : sinon un simple changement d’ordre ou de texte
+bloque toutes les publications. Les tests utilisent le jeu de données figé `tests/fixtures/content/` ;
+le vrai contenu est seulement vérifié comme « valide et générable ».
 
 ## Ajouter un champ au contenu
 

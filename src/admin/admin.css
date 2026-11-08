@@ -172,3 +172,9 @@ input:focus, textarea:focus { border-color: var(--gold); outline: none; box-shad
 .help ol { padding-left: 20px; display: grid; gap: 8px; margin: 8px 0 0; }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* Sections de l'accueil */
+.sections-list { display: grid; gap: 10px; }
+.section-tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.section-tools .btn { padding: 8px 6px; font-size: 0.85rem; white-space: nowrap; }
+.section-tools .btn:disabled { opacity: 0.35; cursor: default; }

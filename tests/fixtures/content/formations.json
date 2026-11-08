@@ -1,0 +1,141 @@
+{
+  "intro": {
+    "titre": "Mes initiations",
+    "sousTitre": "Transmettre, initier, accompagner par le son et l’énergie.",
+    "texte": "Des initiations pensées comme un chemin d’apprentissage et de transformation, dans un cadre sécurisant et éthique.",
+    "badges": ["Bienveillance", "Cadre sécurisant", "Éthique", "Pratique + théorie"]
+  },
+  "esprit": {
+    "titre": "L’esprit des initiations Mélodie de l’Âme",
+    "paragraphes": [
+      "Toutes les initiations sont proposées dans un cadre bienveillant, sécurisant et respectueux du rythme de chacun, sans jugement.",
+      "Vous repartez avec une vraie compétence, une posture juste et une pratique alignée."
+    ]
+  },
+  "certification": {
+    "titre": "Attestation",
+    "texte": "Chaque initiation donne lieu à la remise d’une attestation d’initiation correspondant au module suivi."
+  },
+  "items": [
+    {
+      "id": "lahochi",
+      "titre": "Initiation LaHoChi Traditionnel & 13e Octave",
+      "sousTitre": "Technique de soin énergétique par apposition des mains, transmise par l’apposition de fréquences vibratoires élevées.",
+      "image": "",
+      "imageAlt": "",
+      "blocs": [
+        {
+          "titre": "Cette initiation vous permet",
+          "points": [
+            "D’apprendre à canaliser et transmettre l’énergie LaHoChi",
+            "D’accompagner l’harmonisation physique, émotionnelle et énergétique",
+            "D’élever la fréquence vibratoire de la personne accompagnée",
+            "De pratiquer sur soi et sur autrui, en présentiel ou à distance"
+          ]
+        },
+        {
+          "titre": "Idéale si vous souhaitez",
+          "points": [
+            "Débuter dans l’énergétique",
+            "Renforcer une pratique déjà existante",
+            "Proposer des soins simples, puissants et respectueux"
+          ]
+        }
+      ],
+      "note": "Attestation délivrée à la fin de l’initiation.",
+      "duree": "",
+      "prix": "",
+      "prochainesDates": "",
+      "visible": true
+    },
+    {
+      "id": "bols-tibetains",
+      "titre": "Initiation Bols Tibétains",
+      "sousTitre": "Instruments ancestraux aux vibrations profondes, utilisés pour la relaxation, l’harmonisation et les soins vibratoires.",
+      "image": "",
+      "imageAlt": "",
+      "blocs": [
+        {
+          "titre": "Cette initiation vous apprend",
+          "points": [
+            "À choisir et utiliser les bols tibétains",
+            "À réaliser des soins sonores individuels",
+            "À proposer des bains sonores collectifs",
+            "À utiliser les vibrations pour détendre, rééquilibrer et apaiser"
+          ]
+        },
+        {
+          "titre": "Vous apprendrez notamment",
+          "points": [
+            "Frappes, frottements, placements sur le corps",
+            "Construction de séances complètes",
+            "Accompagnement du lâcher-prise et de la détente profonde"
+          ]
+        }
+      ],
+      "note": "Attestation délivrée à la fin de l’initiation.",
+      "duree": "",
+      "prix": "",
+      "prochainesDates": "",
+      "visible": true
+    },
+    {
+      "id": "bols-de-cristal",
+      "titre": "Initiation Bols de Cristal",
+      "sousTitre": "Fréquences plus subtiles et élevées, idéales pour l’alignement énergétique et les états méditatifs profonds.",
+      "image": "",
+      "imageAlt": "",
+      "blocs": [
+        {
+          "titre": "Cette initiation vous permet",
+          "points": [
+            "De comprendre et utiliser les fréquences des bols de cristal",
+            "D’accompagner l’alignement et la réharmonisation globale",
+            "De proposer des soins vibratoires d’une grande finesse",
+            "D’approfondir le travail de conscience et de présence"
+          ]
+        },
+        {
+          "titre": "Recommandée",
+          "points": [
+            "Aux praticiens déjà sensibles à l’énergétique",
+            "En complément des bols tibétains et des soins vibratoires"
+          ]
+        }
+      ],
+      "note": "Attestation délivrée à la fin de l’initiation.",
+      "duree": "",
+      "prix": "",
+      "prochainesDates": "",
+      "visible": true
+    },
+    {
+      "id": "gongs",
+      "titre": "Initiation aux Gongs",
+      "sousTitre": "Vibrations profondes et enveloppantes pour les voyages sonores, la relaxation et l’harmonisation.",
+      "image": "",
+      "imageAlt": "",
+      "blocs": [
+        {
+          "titre": "Pour qui ?",
+          "points": [
+            "Toute personne souhaitant découvrir l’utilisation du gong en conscience, pour enrichir une pratique (sonothérapie, méditation, soins énergétiques) ou pour un cheminement personnel."
+          ]
+        },
+        {
+          "titre": "Vous y apprendrez",
+          "points": [
+            "Les bases de l’utilisation du gong",
+            "Comment produire un bain sonore harmonieux",
+            "Comment accompagner une séance en toute sécurité"
+          ]
+        }
+      ],
+      "note": "Attestation délivrée à la fin de l’initiation.",
+      "duree": "",
+      "prix": "",
+      "prochainesDates": "",
+      "visible": true
+    }
+  ]
+}

@@ -239,6 +239,8 @@ function readChips(form, name) {
 }
 function bindChips(form) {
   form.querySelectorAll('[data-chips]').forEach((box) => {
+    if (box.dataset.bound) return; // déjà branché (sections ajoutées dynamiquement)
+    box.dataset.bound = '1';
     const input = box.querySelector('.chips-add input');
     const add = () => {
       const v = input.value.trim();
@@ -347,11 +349,11 @@ function readForm(form) {
 function paragraphsFromText(t) { return String(t || '').split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean); }
 
 /* Brouillons automatiques */
-function bindDraft(form, key, pending) {
+function bindDraft(form, key, pending, extra) {
   let timer;
   form.addEventListener('input', () => {
     clearTimeout(timer);
-    timer = setTimeout(() => setDraft(key, { form: readForm(form), chips: chipsSnapshot(form), blocs: readBlocs(form), at: Date.now() }), 400);
+    timer = setTimeout(() => setDraft(key, { form: readForm(form), chips: chipsSnapshot(form), blocs: readBlocs(form), ...(extra ? extra() : {}), at: Date.now() }), 400);
   });
   pending.draftKey = key;
 }
@@ -382,10 +384,15 @@ function draftBanner(key) {
     <span class="banner-actions"><button type="button" class="btn btn-small btn-primary" data-draft-apply>Reprendre</button><button type="button" class="btn btn-small btn-ghost" data-draft-discard>Ignorer</button></span>
   </div>`;
 }
-function bindDraftBanner(form, key) {
+function bindDraftBanner(form, key, prepare) {
   const banner = document.querySelector('[data-draft-banner]');
   if (!banner) return;
-  banner.querySelector('[data-draft-apply]').onclick = () => { applyDraft(form, getDraft(key)); banner.remove(); };
+  banner.querySelector('[data-draft-apply]').onclick = () => {
+    const d = getDraft(key);
+    if (prepare) prepare(d); // ex. recréer la structure (sections ajoutées / supprimées)
+    applyDraft(form, d);
+    banner.remove();
+  };
   banner.querySelector('[data-draft-discard]').onclick = () => { clearDraft(key); banner.remove(); };
 }
 
@@ -480,7 +487,7 @@ async function screenHome() {
       <nav class="tiles" aria-label="Sections">
         <a class="tile" href="#/prestations"><span class="tile-icon">✦</span><span class="tile-title">Prestations</span><span class="tile-sub" data-count="prestations">…</span></a>
         <a class="tile" href="#/formations"><span class="tile-icon">✧</span><span class="tile-title">Initiations</span><span class="tile-sub" data-count="formations">…</span></a>
-        <a class="tile" href="#/accueil"><span class="tile-icon">❋</span><span class="tile-title">Page d’accueil</span><span class="tile-sub">Héro, présentation, parcours, sonothérapie, contact</span></a>
+        <a class="tile" href="#/accueil"><span class="tile-icon">❋</span><span class="tile-title">Page d’accueil</span><span class="tile-sub">Haut de page, sections (ajouter, déplacer, supprimer), contact</span></a>
         <a class="tile" href="#/reglages"><span class="tile-icon">⚙</span><span class="tile-title">Réglages du site</span><span class="tile-sub">E-mail, téléphone, lien de réservation, zone</span></a>
       </nav>
       <p class="meta">Dépôt : <code>${esc(s.repo)}</code> · branche <code>${esc(s.branch)}</code>${s.expires ? ` · jeton valable jusqu’au ${new Date(s.expires).toLocaleDateString('fr-FR')}` : ''}</p>
@@ -723,28 +730,41 @@ async function screenPageTexts(kind) {
 }
 
 /* --- Page d'accueil --- */
+
+// Ancres déjà utilisées par la page d'accueil : une nouvelle section ne doit pas les prendre.
+const RESERVED_SECTION_IDS = ['contact', 'soins', 'contenu', 'hero', 'menu-mobile', 'nav-toggle'];
+let newSectionSeq = 0;
+
+function sectionBlockHtml(s, key, { isNew = false, open = false } = {}) {
+  const k = `s:${key}`;
+  return `
+    <details class="acc acc-section" data-section-key="${esc(key)}"${isNew ? ' data-new="1"' : ''}${open ? ' open' : ''}>
+      <summary><span data-section-label>${esc(s.titre || s.kicker || 'Nouvelle section')}</span><span class="acc-chevron">›</span></summary>
+      <div class="acc-body">
+        <div class="section-tools">
+          <button type="button" class="btn btn-secondary btn-small" data-section-move="up" aria-label="Monter la section">▲ Monter</button>
+          <button type="button" class="btn btn-secondary btn-small" data-section-move="down" aria-label="Descendre la section">▼ Descendre</button>
+          <button type="button" class="btn btn-danger btn-small" data-section-delete>Supprimer</button>
+        </div>
+        ${field('Petit titre (au-dessus)', `${k}.kicker`, s.kicker || '')}
+        ${field('Titre', `${k}.titre`, s.titre || '', { required: true })}
+        ${field('Accroche (écriture manuscrite)', `${k}.lead`, s.lead || '')}
+        ${chipsField('Mots-clés (pastilles)', `${k}.puces`, s.puces, 'Ex. Vibrations')}
+        <div data-photo-section="${esc(key)}">${photoField('Image (facultative)', s.image, { hint: 'Portrait de préférence. Sans image, le texte prend toute la largeur.' })}</div>
+        ${field('Paragraphes', `${k}.paragraphes`, (s.paragraphes || []).join('\n\n'), { rows: 8, hint: 'Sépare les paragraphes par une ligne vide.' })}
+        ${field('Encadré — titre en gras (facultatif)', `${k}.encadre.titre`, s.encadre?.titre || '')}
+        ${field('Encadré — texte (facultatif)', `${k}.encadre.texte`, s.encadre?.texte || '', { rows: 3 })}
+        ${field('Paragraphes après l’encadré (facultatif)', `${k}.paragraphesApres`, (s.paragraphesApres || []).join('\n\n'), { rows: 4 })}
+      </div>
+    </details>`;
+}
+
 async function screenAccueil() {
   $app.innerHTML = shell({ title: 'Page d’accueil', back: '#/', body: '<p class="meta">Chargement…</p>' });
   let a;
   try { a = await load('accueil', { force: true }); } catch (err) { return fail(err); }
   const key = 'accueil';
   const pending = { photos: {} };
-
-  const sectionsHtml = (a.sections || []).map((s, i) => `
-    <details class="acc" ${i === 0 ? '' : ''}>
-      <summary><span>${esc(s.kicker || s.titre || `Section ${i + 1}`)}</span><span class="acc-chevron">›</span></summary>
-      <div class="acc-body">
-        ${field('Petit titre (au-dessus)', `s${i}.kicker`, s.kicker || '')}
-        ${field('Titre', `s${i}.titre`, s.titre || '', { required: true })}
-        ${field('Accroche (écriture manuscrite)', `s${i}.lead`, s.lead || '')}
-        ${chipsField('Mots-clés (pastilles)', `s${i}.puces`, s.puces, 'Ex. Vibrations')}
-        <div data-photo-section="${i}">${photoField('Image', s.image, { hint: 'Image de la section (portrait de préférence).' })}</div>
-        ${field('Paragraphes', `s${i}.paragraphes`, (s.paragraphes || []).join('\n\n'), { rows: 8, hint: 'Sépare les paragraphes par une ligne vide.' })}
-        ${field('Encadré — titre en gras (facultatif)', `s${i}.encadre.titre`, s.encadre?.titre || '')}
-        ${field('Encadré — texte', `s${i}.encadre.texte`, s.encadre?.texte || '', { rows: 3 })}
-        ${field('Paragraphes après l’encadré', `s${i}.paragraphesApres`, (s.paragraphesApres || []).join('\n\n'), { rows: 4 })}
-      </div>
-    </details>`).join('');
 
   $app.innerHTML = shell({
     title: 'Page d’accueil', back: '#/',
@@ -755,8 +775,12 @@ async function screenAccueil() {
       ${field('Phrase manuscrite', 'hero.sousTitre', a.hero?.sousTitre || '', { rows: 2 })}
       <div class="grid-2">${field('Texte du bouton principal', 'hero.boutonTexte', a.hero?.boutonTexte || '')}${field('Texte du lien secondaire', 'hero.lienSecondaireTexte', a.hero?.lienSecondaireTexte || '')}</div>
 
-      <h2 class="form-h">Les trois sections</h2>
-      ${sectionsHtml}
+      <h2 class="form-h">Sections</h2>
+      <p class="hint">Dans l’ordre d’affichage sur la page. Touche une section pour la modifier, la déplacer ou la supprimer.</p>
+      <div class="sections-list" data-sections>
+        ${(a.sections || []).map((s) => sectionBlockHtml(s, s.id)).join('')}
+      </div>
+      <button type="button" class="btn btn-secondary btn-block" data-add-section>+ Ajouter une section</button>
 
       <h2 class="form-h">Aperçu des soins</h2>
       <div class="grid-2">${field('Titre', 'apercuSoins.titre', a.apercuSoins?.titre || '')}${field('Texte du bouton', 'apercuSoins.boutonTexte', a.apercuSoins?.boutonTexte || '')}</div>
@@ -778,45 +802,154 @@ async function screenAccueil() {
   });
 
   const form = document.getElementById('edit');
-  bindChips(form); bindDraft(form, key, pending); bindDraftBanner(form, key);
-  form.querySelectorAll('[data-photo-section]').forEach((box) => {
-    const i = box.dataset.photoSection;
-    const p = { photo: null, removePhoto: false };
-    pending.photos[i] = p;
-    bindPhoto(box, p);
+  const list = form.querySelector('[data-sections]');
+  const blocks = () => [...list.querySelectorAll('[data-section-key]')];
+  const changed = () => form.dispatchEvent(new Event('input', { bubbles: true }));
+
+  function refreshMoveButtons() {
+    const all = blocks();
+    all.forEach((b, i) => {
+      b.querySelector('[data-section-move=up]').disabled = i === 0;
+      b.querySelector('[data-section-move=down]').disabled = i === all.length - 1;
+    });
+  }
+
+  function bindSection(block) {
+    const k = block.dataset.sectionKey;
+    const p = pending.photos[k] || { photo: null, removePhoto: false };
+    pending.photos[k] = p;
+    bindPhoto(block.querySelector('[data-photo-section]'), p);
+    bindChips(block);
+  }
+
+  function addSection({ keyOverride = null, open = true } = {}) {
+    const k = keyOverride || `nouvelle-${Date.now().toString(36)}-${++newSectionSeq}`;
+    list.insertAdjacentHTML('beforeend', sectionBlockHtml({}, k, { isNew: true, open }));
+    const block = list.lastElementChild;
+    bindSection(block);
+    refreshMoveButtons();
+    return block;
+  }
+
+  blocks().forEach(bindSection);
+  refreshMoveButtons();
+
+  form.querySelector('[data-add-section]').addEventListener('click', () => {
+    const block = addSection();
+    changed();
+    block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => form.elements[`s:${block.dataset.sectionKey}.titre`]?.focus(), 350);
   });
+
+  list.addEventListener('click', async (e) => {
+    const block = e.target.closest('[data-section-key]');
+    if (!block) return;
+    const move = e.target.closest('[data-section-move]');
+    if (move) {
+      if (move.dataset.sectionMove === 'up' && block.previousElementSibling) block.previousElementSibling.before(block);
+      if (move.dataset.sectionMove === 'down' && block.nextElementSibling) block.nextElementSibling.after(block);
+      refreshMoveButtons();
+      changed();
+      move.focus();
+      return;
+    }
+    if (e.target.closest('[data-section-delete]')) {
+      const k = block.dataset.sectionKey;
+      const titre = form.elements[`s:${k}.titre`]?.value.trim() || 'Nouvelle section';
+      const menuNote = k === 'sonotherapie' ? ' Le lien « La sonothérapie » du menu mène à cette section : il renverra alors en haut de la page.' : '';
+      const ok = await confirmDialog(`Supprimer la section « ${titre} » ? Elle disparaîtra du site à l’enregistrement.${menuNote}`, { ok: 'Supprimer', danger: true });
+      if (!ok) return;
+      block.remove();
+      delete pending.photos[k];
+      refreshMoveButtons();
+      changed();
+    }
+  });
+
+  // Le titre affiché sur la section repliée suit ce qu'on tape.
+  form.addEventListener('input', (e) => {
+    const name = e.target?.name || '';
+    if (!/^s:.+\.titre$/.test(name)) return;
+    const label = e.target.closest('[data-section-key]')?.querySelector('[data-section-label]');
+    if (label) label.textContent = e.target.value.trim() || 'Nouvelle section';
+  });
+
+  // Brouillon : on mémorise aussi la structure (ordre, sections ajoutées / supprimées).
+  const structure = () => ({ sections: blocks().map((b) => ({ key: b.dataset.sectionKey, isNew: b.dataset.new === '1' })) });
+  const restoreStructure = (draft) => {
+    if (!Array.isArray(draft?.sections)) return;
+    const wanted = new Set(draft.sections.map((s) => s.key));
+    blocks().forEach((b) => { if (!wanted.has(b.dataset.sectionKey)) { delete pending.photos[b.dataset.sectionKey]; b.remove(); } });
+    for (const s of draft.sections) {
+      const existing = list.querySelector(`[data-section-key="${CSS.escape(s.key)}"]`);
+      if (existing) list.appendChild(existing);
+      else if (s.isNew) addSection({ keyOverride: s.key, open: true });
+    }
+    refreshMoveButtons();
+    blocks().forEach((b) => {
+      const t = draft.form?.[`s:${b.dataset.sectionKey}.titre`];
+      if (t !== undefined) b.querySelector('[data-section-label]').textContent = t.trim() || 'Nouvelle section';
+    });
+  };
+  bindChips(form); bindDraft(form, key, pending, structure); bindDraftBanner(form, key, restoreStructure);
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const f = readForm(form);
+    const order = blocks().map((b) => ({ key: b.dataset.sectionKey, isNew: b.dataset.new === '1' }));
+    const missing = order.find((s) => !String(f[`s:${s.key}.titre`] || '').trim());
+    if (missing) {
+      const block = list.querySelector(`[data-section-key="${CSS.escape(missing.key)}"]`);
+      block.open = true;
+      toast('Chaque section doit avoir un titre.', 'error');
+      form.elements[`s:${missing.key}.titre`].focus();
+      return;
+    }
+    if (!f['hero.titre'].trim()) { toast('Le grand titre est obligatoire.', 'error'); form.elements['hero.titre'].focus(); return; }
+
     withBusy(form.querySelector('button[type=submit]'), 'Publication…', async () => {
       try {
         const images = {};
-        for (const [i, p] of Object.entries(pending.photos)) {
+        for (const { key: k } of order) {
+          const p = pending.photos[k];
+          if (!p) continue;
           if (p.photo) {
-            const name = `accueil-${slugify(f[`s${i}.titre`] || `section-${i}`)}-${Date.now().toString(36)}.${p.photo.ext}`;
-            await state.client.putBinary(`${CFG.uploadsDir}/${name}`, p.photo.base64, `Admin : image section « ${f[`s${i}.titre`]} »`);
-            images[i] = `${CFG.sitePublicPrefix}/${name}`;
-          } else if (p.removePhoto) images[i] = '';
+            const titre = f[`s:${k}.titre`].trim();
+            const name = `accueil-${slugify(titre)}-${Date.now().toString(36)}.${p.photo.ext}`;
+            await state.client.putBinary(`${CFG.uploadsDir}/${name}`, p.photo.base64, `Admin : image section « ${titre} »`);
+            images[k] = `${CFG.sitePublicPrefix}/${name}`;
+          } else if (p.removePhoto) images[k] = '';
         }
+        const before = (a.sections || []).length;
         await update('accueil', (d) => {
           d.hero = { ...(d.hero || {}), titre: f['hero.titre'].trim(), sousTitre: f['hero.sousTitre'].trim(), boutonTexte: f['hero.boutonTexte'].trim(), lienSecondaireTexte: f['hero.lienSecondaireTexte'].trim() };
-          (d.sections || []).forEach((s, i) => {
-            s.kicker = f[`s${i}.kicker`].trim();
-            s.titre = f[`s${i}.titre`].trim();
-            s.lead = f[`s${i}.lead`].trim();
-            s.puces = readChips(form, `s${i}.puces`);
-            if (images[i] !== undefined) { s.image = images[i]; if (images[i]) s.imageContain = false; }
-            s.paragraphes = paragraphsFromText(f[`s${i}.paragraphes`]);
-            s.encadre = { titre: f[`s${i}.encadre.titre`].trim(), texte: f[`s${i}.encadre.texte`].trim() };
-            s.paragraphesApres = paragraphsFromText(f[`s${i}.paragraphesApres`]);
+
+          const existing = new Map((d.sections || []).map((s) => [s.id, s]));
+          const taken = new Set([...RESERVED_SECTION_IDS, ...order.filter((s) => !s.isNew).map((s) => s.key)]);
+          d.sections = order.map(({ key: k, isNew }) => {
+            const s = isNew ? {} : { ...(existing.get(k) || {}) };
+            const titre = f[`s:${k}.titre`].trim();
+            if (isNew) { s.id = uniqueId(slugify(titre), [...taken]); taken.add(s.id); } else s.id = k;
+            s.kicker = f[`s:${k}.kicker`].trim();
+            s.titre = titre;
+            s.lead = f[`s:${k}.lead`].trim();
+            s.puces = readChips(form, `s:${k}.puces`);
+            if (images[k] !== undefined) {
+              s.image = images[k];
+              if (images[k]) { s.imageContain = false; s.imageAlt = titre; }
+            } else if (isNew) s.image = '';
+            s.paragraphes = paragraphsFromText(f[`s:${k}.paragraphes`]);
+            s.encadre = { titre: f[`s:${k}.encadre.titre`].trim(), texte: f[`s:${k}.encadre.texte`].trim() };
+            s.paragraphesApres = paragraphsFromText(f[`s:${k}.paragraphesApres`]);
+            return s;
           });
+
           d.apercuSoins = { titre: f['apercuSoins.titre'].trim(), lead: f['apercuSoins.lead'].trim(), boutonTexte: f['apercuSoins.boutonTexte'].trim() };
           d.apercuInitiations = { titre: f['apercuInitiations.titre'].trim(), texte: f['apercuInitiations.texte'].trim(), boutonTexte: f['apercuInitiations.boutonTexte'].trim() };
           d.contact = { titre: f['contact.titre'].trim(), texte: f['contact.texte'].trim(), boutonTexte: f['contact.boutonTexte'].trim() };
           d.citation = f.citation.trim();
           return d;
-        }, 'Admin : textes de la page d’accueil');
+        }, order.length !== before || order.some((s) => s.isNew) ? 'Admin : sections de la page d’accueil' : 'Admin : textes de la page d’accueil');
         clearDraft(key);
         toast('Enregistré — publication lancée', 'success');
         location.hash = '#/';

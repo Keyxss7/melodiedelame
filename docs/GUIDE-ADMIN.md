@@ -17,7 +17,7 @@ Pour une modification depuis le PC : édite dans `repo`, puis dans un terminal :
 
 ```bash
 node build.js        # vérifie que tout se génère (dist/)
-npm test             # 11 tests doivent passer
+npm test             # tous les tests doivent passer (« fail 0 »)
 ```
 
 puis commit + push (GitHub Desktop ou `git`). La publication est automatique (≈ 1 min, onglet **Actions**).
@@ -67,7 +67,7 @@ elle est collaboratrice du dépôt.
 | --- | --- |
 | **Prestations / Initiations** | Ajouter, modifier, supprimer, masquer (case « Visible »), réordonner (▲▼ puis « Enregistrer le nouvel ordre »), changer la photo. |
 | **Textes de la page** (lien en haut à droite de la liste) | Titre et sous-titre de la page, mot personnel, rappel, badges, blocs « esprit » / « attestation ». |
-| **Page d’accueil** | Grand titre, phrase manuscrite, boutons, les 3 sections (titres, mots-clés, image, paragraphes, encadré), aperçu des soins, bandeau initiations, bloc contact, citation. |
+| **Page d’accueil** | Grand titre, phrase manuscrite, boutons ; les **sections** : en ajouter (« + Ajouter une section »), les déplacer (▲ ▼), les supprimer, et modifier titres, mots-clés, image (facultative : sans image, le texte prend toute la largeur), paragraphes, encadré ; aperçu des soins, bandeau initiations, bloc contact, citation. |
 | **Réglages du site** | E-mail, téléphone, lien de réservation, zone, horaires, description Google, texte des villes, réseaux sociaux. |
 
 - **Photos** : choisies depuis la galerie ou l’appareil photo. Elles sont redimensionnées
@@ -90,5 +90,5 @@ Les fichiers `content/*.json` sont lisibles à la main. Tu peux les éditer dans
 | « Jeton refusé » à la connexion | Jeton mal copié ou expiré → en générer un nouveau. |
 | « Accès refusé » à l’enregistrement | Le jeton n’a pas la permission **Contents : Read and write** sur ce dépôt. |
 | « Statut de publication indisponible » | Le jeton n’a pas **Actions : Read-only**. Sans gravité : la publication se fait quand même. |
-| Bandeau rouge « La dernière publication a échoué » | Ouvre « détail » : la page GitHub Actions montre l’erreur (souvent un JSON invalide). Le site en ligne n’est pas affecté. |
+| Bandeau rouge « La dernière publication a échoué » | Ouvre « détail » : la page GitHub Actions montre l’erreur. Tes modifications sont bien enregistrées dans GitHub, seule la mise en ligne est bloquée ; le site reste dans son état précédent. Dès que la cause est corrigée, la publication suivante remet tout en ligne d’un coup. |
 | La photo n’apparaît pas dans l’admin juste après l’ajout | Normal pendant la minute de publication : l’admin la lit alors directement depuis GitHub. |

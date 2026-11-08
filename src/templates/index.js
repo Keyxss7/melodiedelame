@@ -6,12 +6,13 @@ function splitSection(section, index) {
   const flip = index % 2 === 1 ? ' split--flip' : '';
   const enc = section.encadre || {};
   const hasEncadre = enc.titre || enc.texte;
+  const hasImage = Boolean(section.image);
   return `
 <section class="split${flip}" id="${esc(section.id)}" aria-labelledby="${esc(section.id)}-titre">
-  <div class="split-card">
-    <figure class="split-media">
-      ${section.image ? `<img src="${safeUrl(section.image)}" alt="${esc(section.imageAlt || '')}"${section.imageContain ? ' class="is-contain"' : ''} loading="lazy" decoding="async" width="800" height="1000">` : ''}
-    </figure>
+  <div class="split-card${hasImage ? '' : ' split-card--text'}">
+    ${hasImage ? `<figure class="split-media">
+      <img src="${safeUrl(section.image)}" alt="${esc(section.imageAlt || '')}"${section.imageContain ? ' class="is-contain"' : ''} loading="lazy" decoding="async" width="800" height="1000">
+    </figure>` : ''}
     <div class="split-body">
       ${section.kicker ? `<p class="kicker">${esc(section.kicker)}</p>` : ''}
       <h2 class="section-title" id="${esc(section.id)}-titre">${esc(section.titre)}</h2>

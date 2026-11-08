@@ -56,6 +56,14 @@ function validate({ site, accueil, prestations, formations }) {
       ids.add(it.id);
     });
   }
+  if (!Array.isArray(accueil.sections)) errors.push('accueil.json : « sections » doit être une liste');
+  const sectionIds = new Set();
+  (accueil.sections || []).forEach((s, i) => {
+    if (!s.id) errors.push(`accueil.json : la section n°${i + 1} n'a pas d'« id »`);
+    if (!String(s.titre || '').trim()) errors.push(`accueil.json : la section n°${i + 1} n'a pas de « titre »`);
+    if (sectionIds.has(s.id)) errors.push(`accueil.json : id en double « ${s.id} »`);
+    sectionIds.add(s.id);
+  });
   if (errors.length) throw new Error('Contenu invalide :\n - ' + errors.join('\n - '));
 }
 

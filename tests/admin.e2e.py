@@ -11,7 +11,7 @@ os.makedirs(SHOTS, exist_ok=True)
 # "Dépôt" en mémoire
 repo = {}
 for f in ['site.json', 'accueil.json', 'prestations.json', 'formations.json']:
-    with open(os.path.join(ROOT, 'content', f), 'rb') as fh:
+    with open(os.path.join(ROOT, 'tests', 'fixtures', 'content', f), 'rb') as fh:  # jeu de données figé
         repo[f'content/{f}'] = fh.read()
 commits = []
 runs = []
@@ -169,19 +169,68 @@ async def main():
         await page.click('.modal [data-ok]')
         await page.wait_for_function("document.querySelectorAll('.rows .row').length === 4")
 
-        # Page d'accueil
+        # Page d'accueil : textes + sections (ajout, déplacement, suppression)
         await page.goto('http://localhost:4173/admin/#/accueil')
         await page.wait_for_selector('#edit')
+        assert await page.locator('[data-section-key]').count() == 3
         await page.fill('textarea[name="hero.titre"]', 'Nouveau titre')
-        await page.locator('.acc summary').first.click()
-        await page.fill('input[name="s0.kicker"]', 'Kicker modifié')
+        await page.locator('[data-section-key="presentation"] summary').click()
+        await page.fill('input[name="s:presentation.kicker"]', 'Kicker modifié')
+        # Le premier ne peut pas monter, le dernier ne peut pas descendre
+        assert await page.is_disabled('[data-section-key="presentation"] [data-section-move=up]')
+        # Ajouter une section
+        await page.click('[data-add-section]')
+        new_key = await page.locator('[data-section-key][data-new="1"]').get_attribute('data-section-key')
+        await page.fill(f'input[name="s:{new_key}.titre"]', 'Les bienfaits du son')
+        await page.fill(f'textarea[name="s:{new_key}.paragraphes"]', 'Un.\n\nDeux.')
+        await page.fill(f'[data-section-key="{new_key}"] [data-chips] input', 'Sommeil')
+        await page.keyboard.press('Enter')
+        assert (await page.inner_text(f'[data-section-key="{new_key}"] [data-section-label]')) == 'Les bienfaits du son'
+        # La monter d'un cran (elle passe avant « sonotherapie »)
+        await page.click(f'[data-section-key="{new_key}"] [data-section-move=up]')
+        # Supprimer « parcours » (avec confirmation)
+        await page.locator('[data-section-key="parcours"] summary').click()
+        await page.click('[data-section-key="parcours"] [data-section-delete]')
+        await page.click('.modal [data-ok]')
+        assert await page.locator('[data-section-key]').count() == 3
         await page.screenshot(path=f'{SHOTS}/06-accueil.png', full_page=True)
+        # Une section sans titre bloque l'enregistrement
+        await page.fill(f'input[name="s:{new_key}.titre"]', '')
+        await page.click('#edit button[type=submit]')
+        await page.wait_for_selector('.toast-error')
+        assert 'titre' in (await page.inner_text('.toast-error')).lower()
+        await page.fill(f'input[name="s:{new_key}.titre"]', 'Les bienfaits du son')
         await page.click('#edit button[type=submit]')
         await page.wait_for_selector('.tiles')
         a = json.loads(repo['content/accueil.json'])
-        assert a['hero']['titre'] == 'Nouveau titre' and a['sections'][0]['kicker'] == 'Kicker modifié'
-        assert a['sections'][0]['image'] == 'images/logo2.webp'  # inchangée
-        assert a['sections'][0]['imageContain'] is True
+        assert a['hero']['titre'] == 'Nouveau titre'
+        assert [s['id'] for s in a['sections']] == ['presentation', 'les-bienfaits-du-son', 'sonotherapie'], [s['id'] for s in a['sections']]
+        assert a['sections'][0]['kicker'] == 'Kicker modifié'
+        assert a['sections'][0]['image'] == 'images/logo2.webp' and a['sections'][0]['imageContain'] is True  # inchangées
+        ns = a['sections'][1]
+        assert ns['titre'] == 'Les bienfaits du son' and ns['paragraphes'] == ['Un.', 'Deux.'] and ns['puces'] == ['Sommeil'] and ns['image'] == '', ns
+        assert a['sections'][2]['image'] == 'images/bol.webp'  # section existante conservée telle quelle
+
+        # Brouillon de structure : ajout + suppression non enregistrés, puis repris
+        await page.goto('http://localhost:4173/admin/#/accueil')
+        await page.wait_for_selector('#edit')
+        await page.click('[data-add-section]')
+        k2 = await page.locator('[data-section-key][data-new="1"]').get_attribute('data-section-key')
+        await page.fill(f'input[name="s:{k2}.titre"]', 'Brouillon de section')
+        await page.locator('[data-section-key="sonotherapie"] summary').click()
+        await page.click('[data-section-key="sonotherapie"] [data-section-delete]')
+        await page.click('.modal [data-ok]')
+        await page.wait_for_timeout(700)
+        await page.goto('http://localhost:4173/admin/#/')
+        await page.goto('http://localhost:4173/admin/#/accueil')
+        await page.wait_for_selector('[data-draft-banner]')
+        assert await page.locator('[data-section-key]').count() == 3  # structure enregistrée
+        await page.click('[data-draft-apply]')
+        keys = await page.eval_on_selector_all('[data-section-key]', 'els => els.map(e => e.dataset.sectionKey)')
+        assert keys == ['presentation', 'les-bienfaits-du-son', k2], keys
+        assert await page.input_value(f'input[name="s:{k2}.titre"]') == 'Brouillon de section'
+        await page.goto('http://localhost:4173/admin/#/')
+        await page.evaluate("localStorage.removeItem('mda.draft.accueil')")
 
         # Réglages
         await page.goto('http://localhost:4173/admin/#/reglages')
