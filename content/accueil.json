@@ -91,22 +91,34 @@
     {
       "id": "un-moment-de-douceur",
       "kicker": "La sonothérapie animale",
-      "titre": "Un moment de douceur",
-      "lead": "",
-      "puces": [],
+      "titre": "Nos animaux aussi ont droit à leur moment privilégié",
+      "lead": "Une parenthèse de douceur, à l'écoute de leurs besoins.",
+      "puces": [
+        "Douleurs",
+        "Stress/Anxiété",
+        "Peur/Dépression",
+        "Sensibilité émotionnelle",
+        "Agitation / Nervosité",
+        "Tensions corporelles",
+        "Maladie chronique et/ou convalescence",
+        "Vieillissement",
+        "Deuil/Séparation"
+      ],
       "image": "images/uploads/accueil-un-moment-de-douceur-mw8aoywz.webp",
       "imageContain": false,
       "imageAlt": "Un moment de douceur",
       "paragraphes": [
         "Nos animaux sont des êtres sincères, qui vivent dans l'amour inconditionnel et qui de ce fait, vivent pleinement leur sensibilité. Il sont réceptifs à leur environnement, à nos émotions et aux changements qui rythment leur quotidien.",
-        "Les vibrations des bols tibétains vibrent avec délicatesse que j'adapte à la sensibilité de votre animal en associant un travail énergétique pour lui offrir un moment de calme et de relâchement.",
-        "Chaque séance se déroule dans le respect de son rythme, de ses besoins et de ses réactions, sans jamais forcer le contact."
+        "Tout comme nous, ils peuvent traverser des périodes de stress, d'inquiétude, de fatigue ou d'inconfort. Et tout comme nous, ils ont besoin de moments de calme, de sécurité et de douceur."
       ],
       "encadre": {
-        "titre": "",
-        "texte": ""
+        "titre": "Les sons et les vibrations ne sont pas uniquement perçus par l'être humain.",
+        "texte": "Les animaux possèdent eux aussi une sensibilité auditive et corporelle, parfois même bien plus développée que la nôtre.\n\nChaque séance se déroule dans le respect de son rythme, de ses besoins et de ses réactions, sans jamais forcer le contact."
       },
-      "paragraphesApres": []
+      "paragraphesApres": [
+        "La sonothérapie leur propose ainsi une expérience sensorielle douce, à travers les sons et les vibrations des bols tibétains, dans un environnement rassurant.",
+        "Les vibrations des bols tibétains vibrent avec délicatesse, les sonorités sont précisément sélectionnées afin d'assurer leur confort auditif.\nJ'associe le tout à un travail énergétique pour lui offrir un moment de calme, de relâchement afin qu'il retrouve sa plénitude."
+      ]
     }
   ],
   "apercuSoins": {
