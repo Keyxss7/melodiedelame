@@ -3,7 +3,12 @@
     "titre": "Mes initiations",
     "sousTitre": "Transmettre, initier, accompagner par le son et l’énergie.",
     "texte": "Des initiations pensées comme un chemin d’apprentissage et de transformation, dans un cadre sécurisant et éthique.",
-    "badges": ["Bienveillance", "Cadre sécurisant", "Éthique", "Pratique + théorie"]
+    "badges": [
+      "Bienveillance",
+      "Cadre sécurisant",
+      "Éthique",
+      "Pratique + théorie"
+    ]
   },
   "esprit": {
     "titre": "L’esprit des initiations Mélodie de l’Âme",
@@ -21,8 +26,8 @@
       "id": "lahochi",
       "titre": "Initiation LaHoChi Traditionnel & 13e Octave",
       "sousTitre": "Technique de soin énergétique par apposition des mains, transmise par l’apposition de fréquences vibratoires élevées.",
-      "image": "",
-      "imageAlt": "",
+      "image": "images/uploads/initiation-lahochi-traditionnel-13e-octave-mw805ae5.webp",
+      "imageAlt": "Initiation LaHoChi Traditionnel & 13e Octave",
       "blocs": [
         {
           "titre": "Cette initiation vous permet",
