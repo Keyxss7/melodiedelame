@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -76,8 +77,36 @@ test('build génère toutes les pages et les assets', async () => {
   assert.match(prestaHtml, /Réserver ce soin/);
 
   const notFound = fs.readFileSync(path.join(out, '404.html'), 'utf8');
-  assert.match(notFound, /href="\/css\/style\.css"/, 'les liens de la 404 doivent être absolus');
+  assert.match(notFound, /href="\/css\/style\.css\?v=[0-9a-f]{8}"/, 'les liens de la 404 doivent être absolus');
   assert.match(notFound, /noindex/);
+  fs.rmSync(out, { recursive: true, force: true });
+});
+
+test('les styles et scripts sont versionnés : jamais d’ancien style avec une nouvelle page', async () => {
+  const out = tmpDir('mda-dist-');
+  await build({ out, contentDir: FIXTURES, quiet: true });
+  const hashOf = (rel) => crypto.createHash('sha256').update(fs.readFileSync(path.join(out, rel))).digest('hex').slice(0, 8);
+
+  // Pages publiques : chaque lien porte l'empreinte du fichier réellement publié.
+  for (const page of ['index.html', 'prestations.html', 'formations.html', 'mentions-legales.html']) {
+    const html = fs.readFileSync(path.join(out, page), 'utf8');
+    for (const rel of ['css/style.css', 'css/fonts.css', 'js/site.js']) {
+      assert.ok(html.includes(`"${rel}?v=${hashOf(rel)}"`), `${page} : ${rel} doit être versionné`);
+    }
+    assert.doesNotMatch(html, /(?:href|src)="(?!https?:)[^"?]+\.(?:css|js)"/, `${page} : un style ou script n'est pas versionné`);
+  }
+
+  // Admin : index.html et les modules importés par admin.js.
+  const adminHtml = fs.readFileSync(path.join(out, 'admin/index.html'), 'utf8');
+  for (const [ref, rel] of [['../css/fonts.css', 'css/fonts.css'], ['admin.css', 'admin/admin.css'], ['config.js', 'admin/config.js'], ['admin.js', 'admin/admin.js']]) {
+    assert.ok(adminHtml.includes(`"${ref}?v=${hashOf(rel)}"`), `admin : ${ref} doit être versionné`);
+  }
+  const adminJs = fs.readFileSync(path.join(out, 'admin/admin.js'), 'utf8');
+  assert.ok(adminJs.includes(`from './gh.js?v=${hashOf('admin/gh.js')}'`), 'admin.js : import de gh.js versionné');
+  assert.ok(adminJs.includes(`from './img.js?v=${hashOf('admin/img.js')}'`), 'admin.js : import de img.js versionné');
+
+  // Les sources ne sont pas modifiées.
+  assert.match(fs.readFileSync(path.join(ROOT, 'src/admin/admin.js'), 'utf8'), /from '\.\/gh\.js';/);
   fs.rmSync(out, { recursive: true, force: true });
 });
 

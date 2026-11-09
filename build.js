@@ -8,6 +8,7 @@
  *
  * Aucune dépendance : uniquement les modules Node intégrés.
  */
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
@@ -138,6 +139,48 @@ export function annotateImages(data, srcDir = SRC) {
   return data;
 }
 
+/**
+ * Ajoute « ?v=<empreinte> » à chaque lien vers un style (.css) ou un script (.js) local.
+ * Le navigateur garde ces fichiers en cache quelques minutes : sans empreinte, il peut
+ * associer une page toute neuve à l'ancien style (mise en page cassée). Avec, chaque
+ * publication qui modifie un fichier change son adresse : il est forcément rechargé.
+ * Travaille uniquement dans `out` ; les sources de src/ ne sont pas touchées.
+ */
+export function versionAssets(out) {
+  const hashes = new Map();
+  const version = (abs) => {
+    if (!hashes.has(abs)) {
+      hashes.set(abs, fs.existsSync(abs) ? crypto.createHash('sha256').update(fs.readFileSync(abs)).digest('hex').slice(0, 8) : null);
+    }
+    const h = hashes.get(abs);
+    return h ? `?v=${h}` : '';
+  };
+  const resolve = (fromDir, ref) => (ref.startsWith('/') ? path.join(out, ref) : path.resolve(fromDir, ref));
+
+  // 1) Modules JS de l'admin : import … from './x.js' (avant de calculer l'empreinte d'admin.js).
+  const adminDir = path.join(out, 'admin');
+  if (fs.existsSync(adminDir)) {
+    for (const name of fs.readdirSync(adminDir).filter((n) => n.endsWith('.js'))) {
+      const file = path.join(adminDir, name);
+      const js = fs.readFileSync(file, 'utf8');
+      const next = js.replace(/(\bfrom\s+')(\.{1,2}\/[\w./-]+\.js)(')/g, (m, a, ref, q) => `${a}${ref}${version(resolve(adminDir, ref))}${q}`);
+      if (next !== js) fs.writeFileSync(file, next);
+    }
+  }
+
+  // 2) Pages HTML (racine + admin) : href="….css" et src="….js" locaux, sans paramètre déjà présent.
+  const htmlFiles = [
+    ...fs.readdirSync(out).filter((n) => n.endsWith('.html')).map((n) => path.join(out, n)),
+    ...(fs.existsSync(path.join(adminDir, 'index.html')) ? [path.join(adminDir, 'index.html')] : []),
+  ];
+  for (const file of htmlFiles) {
+    const dir = path.dirname(file);
+    const html = fs.readFileSync(file, 'utf8');
+    const next = html.replace(/((?:href|src)=")((?!https?:|\/\/|data:)[^"?#]+\.(?:css|js))(")/g, (m, a, ref, q) => `${a}${ref}${version(resolve(dir, ref))}${q}`);
+    if (next !== html) fs.writeFileSync(file, next);
+  }
+}
+
 export async function build({ out = path.join(ROOT, 'dist'), contentDir = CONTENT, quiet = false } = {}) {
   const started = Date.now();
   const data = annotateImages(loadContent(contentDir));
@@ -158,6 +201,7 @@ export async function build({ out = path.join(ROOT, 'dist'), contentDir = CONTEN
   copyDir(path.join(SRC, 'admin'), path.join(out, 'admin'));
   copyDir(path.join(SRC, 'static'), out); // CNAME, robots.txt, favicon, icons, manifest…
   fs.writeFileSync(path.join(out, '.nojekyll'), '');
+  versionAssets(out);
 
   if (!quiet) console.log(`✓ Site généré dans ${path.relative(ROOT, out) || '.'} (${Object.keys(pages).length} pages, ${Date.now() - started} ms)`);
   return { pages: Object.keys(pages), out };
