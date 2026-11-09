@@ -232,6 +232,32 @@ async def main():
         await page.goto('http://localhost:4173/admin/#/')
         await page.evaluate("localStorage.removeItem('mda.draft.accueil')")
 
+        # Image de fond du haut de page, en simulant un iPhone (pas d'encodage WebP) :
+        # la transparence doit être conservée (envoi en PNG, pas en JPEG à fond noir).
+        await page.add_init_script("""(() => { const orig = HTMLCanvasElement.prototype.toBlob;
+          HTMLCanvasElement.prototype.toBlob = function (cb, type, q) { return orig.call(this, cb, type === 'image/webp' ? 'image/png' : type, q); }; })()""")
+        await page.goto('http://localhost:4173/admin/#/accueil')
+        await page.reload()
+        await page.wait_for_selector('[data-photo-hero] [data-photo-input]', state='attached')
+        await page.set_input_files('[data-photo-hero] [data-photo-input]', os.path.join(ROOT, 'src', 'images', 'hero-chouette.webp'))
+        await page.wait_for_function("document.querySelector('[data-photo-hero] [data-photo-hint]').textContent.startsWith('Prête')")
+        await page.click('#edit button[type=submit]')
+        await page.wait_for_selector('.tiles')
+        a = json.loads(repo['content/accueil.json'])
+        hero_img = a['hero'].get('image', '')
+        assert hero_img.startswith('images/uploads/accueil-fond-') and hero_img.endswith('.png'), a['hero']
+        assert repo['src/' + hero_img][:8] == b'\x89PNG\r\n\x1a\n', 'le fichier envoyé doit être un PNG'
+        from PIL import Image as _Img
+        import io as _io
+        assert _Img.open(_io.BytesIO(repo['src/' + hero_img])).mode == 'RGBA', 'la transparence doit être conservée'
+        # Retirer l'image de fond
+        await page.goto('http://localhost:4173/admin/#/accueil')
+        await page.wait_for_selector('[data-photo-hero] [data-photo-remove]:not([hidden])')
+        await page.click('[data-photo-hero] [data-photo-remove]')
+        await page.click('#edit button[type=submit]')
+        await page.wait_for_selector('.tiles')
+        assert json.loads(repo['content/accueil.json'])['hero']['image'] == ''
+
         # Réglages
         await page.goto('http://localhost:4173/admin/#/reglages')
         await page.wait_for_selector('#edit')

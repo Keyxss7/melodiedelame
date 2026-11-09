@@ -764,7 +764,7 @@ async function screenAccueil() {
   let a;
   try { a = await load('accueil', { force: true }); } catch (err) { return fail(err); }
   const key = 'accueil';
-  const pending = { photos: {} };
+  const pending = { photos: {}, hero: { photo: null, removePhoto: false } };
 
   $app.innerHTML = shell({
     title: 'Page d’accueil', back: '#/',
@@ -774,6 +774,7 @@ async function screenAccueil() {
       ${field('Grand titre', 'hero.titre', a.hero?.titre || '', { required: true, rows: 2 })}
       ${field('Phrase manuscrite', 'hero.sousTitre', a.hero?.sousTitre || '', { rows: 2 })}
       <div class="grid-2">${field('Texte du bouton principal', 'hero.boutonTexte', a.hero?.boutonTexte || '')}${field('Texte du lien secondaire', 'hero.lienSecondaireTexte', a.hero?.lienSecondaireTexte || '')}</div>
+      <div data-photo-hero>${photoField('Image de fond (facultative)', a.hero?.image, { hint: 'Grande image derrière le titre, affichée en douceur. Idéalement un PNG à fond transparent, en hauteur. « Retirer » pour garder seulement le mandala.' })}</div>
 
       <h2 class="form-h">Sections</h2>
       <p class="hint">Dans l’ordre d’affichage sur la page. Touche une section pour la modifier, la déplacer ou la supprimer.</p>
@@ -831,6 +832,7 @@ async function screenAccueil() {
     return block;
   }
 
+  bindPhoto(form.querySelector('[data-photo-hero]'), pending.hero);
   blocks().forEach(bindSection);
   refreshMoveButtons();
 
@@ -909,6 +911,12 @@ async function screenAccueil() {
 
     withBusy(form.querySelector('button[type=submit]'), 'Publication…', async () => {
       try {
+        let heroImage;
+        if (pending.hero.photo) {
+          const name = `accueil-fond-${Date.now().toString(36)}.${pending.hero.photo.ext}`;
+          await state.client.putBinary(`${CFG.uploadsDir}/${name}`, pending.hero.photo.base64, 'Admin : image de fond du haut de page');
+          heroImage = `${CFG.sitePublicPrefix}/${name}`;
+        } else if (pending.hero.removePhoto) heroImage = '';
         const images = {};
         for (const { key: k } of order) {
           const p = pending.photos[k];
@@ -923,6 +931,7 @@ async function screenAccueil() {
         const before = (a.sections || []).length;
         await update('accueil', (d) => {
           d.hero = { ...(d.hero || {}), titre: f['hero.titre'].trim(), sousTitre: f['hero.sousTitre'].trim(), boutonTexte: f['hero.boutonTexte'].trim(), lienSecondaireTexte: f['hero.lienSecondaireTexte'].trim() };
+          if (heroImage !== undefined) d.hero.image = heroImage;
 
           const existing = new Map((d.sections || []).map((s) => [s.id, s]));
           const taken = new Set([...RESERVED_SECTION_IDS, ...order.filter((s) => !s.isNew).map((s) => s.key)]);

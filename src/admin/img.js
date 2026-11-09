@@ -50,13 +50,31 @@ export async function compressImage(file, { maxSize = 1400, quality = 0.82 } = {
   let blob = await toBlob(canvas, 'image/webp', quality);
   let ext = 'webp';
   if (!blob || blob.type !== 'image/webp') {
-    blob = await toBlob(canvas, 'image/jpeg', quality);
-    ext = 'jpg';
+    // WebP indisponible (ex. Safari / iPhone) : PNG si l'image a de la transparence
+    // (sinon le fond deviendrait noir en JPEG), JPEG sinon.
+    if (hasTransparency(canvas)) {
+      blob = await toBlob(canvas, 'image/png');
+      ext = 'png';
+    } else {
+      blob = await toBlob(canvas, 'image/jpeg', quality);
+      ext = 'jpg';
+    }
   }
   if (!blob) throw new Error('Compression impossible sur cet appareil.');
 
   const base64 = await blobToBase64(blob);
   return { blob, base64, ext, width: w, height: h, previewUrl: URL.createObjectURL(blob) };
+}
+
+/** Vrai si l'image dessinée contient des pixels transparents (échantillon réduit, rapide). */
+export function hasTransparency(canvas) {
+  const s = document.createElement('canvas');
+  s.width = Math.min(96, canvas.width); s.height = Math.min(96, canvas.height);
+  const c = s.getContext('2d');
+  c.drawImage(canvas, 0, 0, s.width, s.height);
+  const data = c.getImageData(0, 0, s.width, s.height).data;
+  for (let i = 3; i < data.length; i += 4) if (data[i] < 250) return true;
+  return false;
 }
 
 export function formatBytes(n) {

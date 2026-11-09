@@ -50,9 +50,10 @@ export function render({ site, accueil, prestations }) {
   const telHref = tel ? `tel:+33${tel.replace(/^0/, '')}` : '';
 
   const body = `
-<section class="hero" aria-labelledby="hero-titre">
+<section class="hero${h.image ? ' hero--image' : ''}" aria-labelledby="hero-titre">
   <div class="hero-art" aria-hidden="true">
     <img src="images/mandala.webp" alt="" width="900" height="900" decoding="async" fetchpriority="low" class="hero-mandala">
+    ${h.image ? `<img src="${safeUrl(h.image)}" alt="" ${sizeAttrs(h, 900, 1000)} decoding="async" class="hero-image">` : ''}
     <span class="ring ring-1"></span><span class="ring ring-2"></span><span class="ring ring-3"></span>
   </div>
   <div class="hero-content">

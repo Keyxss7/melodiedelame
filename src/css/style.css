@@ -243,6 +243,36 @@ ul[role="list"] { list-style: none; margin: 0; padding: 0; }
   width: min(82vw, 680px); height: auto; opacity: 0.13;
   animation: mandala-spin 160s linear infinite, art-in 1.8s ease-out both;
 }
+/* Image de fond du haut de page (facultative, choisie dans l'admin) :
+   grande image centrée derrière le titre, au-dessus du mandala ; bords fondus dans le fond. */
+.hero-image {
+  position: absolute; left: 50%; top: 53%; transform: translate(-50%, -50%);
+  height: 82%; width: auto; max-width: none;
+  opacity: 0.55; filter: saturate(0.8) brightness(1.05); /* version douce et aérée */
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 85%, transparent 100%);
+          mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 85%, transparent 100%);
+  animation: hero-image-in 1.6s ease-out both;
+}
+/* Avec une image : mandala réduit à un filigrane, titre un peu plus petit (plus d'air) */
+.hero--image .hero-mandala { animation: mandala-spin 160s linear infinite, art-in-faint 1.8s ease-out both; }
+@keyframes art-in-faint { from { opacity: 0; transform: scale(0.92); } to { opacity: 0.06; transform: scale(1); } }
+.hero--image .hero-title { font-size: clamp(2.15rem, 5vw, 4rem); }
+/* Avec une image : le texte remonte dans le creux de l'image (comme la maquette),
+   et le haut de page garde une hauteur minimale sur les petits écrans. */
+.hero.hero--image {
+  min-height: max(calc(100svh - 10px), 780px);
+  padding-top: calc(var(--topbar-h) + 8px); padding-bottom: max(14svh, 110px);
+}
+@media (min-width: 901px) {
+  /* Ordinateur : un peu plus de hauteur pour que l'image garde la même composition */
+  .hero.hero--image { min-height: max(calc(100svh - 10px), 960px); }
+}
+/* Avec une image, la ligne « lieu — horaires » descend en bas du haut de page, sous l'image */
+.hero--image .hero-meta {
+  position: absolute; left: 0; right: 0; bottom: 48px; margin: 0; padding: 0 var(--gutter);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+}
+@keyframes hero-image-in { from { opacity: 0; } to { opacity: 0.55; } }
 .ring {
   position: absolute; left: 50%; top: 50%;
   width: min(70vw, 560px); aspect-ratio: 1; margin-left: calc(min(70vw, 560px) / -2); margin-top: calc(min(70vw, 560px) / -2);
@@ -509,6 +539,7 @@ ul[role="list"] { list-style: none; margin: 0; padding: 0; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .hero-mandala { opacity: 0.13; }
+  .hero--image .hero-mandala { opacity: 0.06; }
   .ring { display: none; }
 }
 

@@ -125,6 +125,7 @@ function copyDir(from, to) {
  */
 export function annotateImages(data, srcDir = SRC) {
   const withImages = [
+    ...(data.accueil.hero ? [data.accueil.hero] : []),
     ...(data.accueil.sections || []),
     ...(data.prestations.items || []),
     ...(data.formations.items || []),
