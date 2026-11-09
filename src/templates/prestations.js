@@ -1,4 +1,4 @@
-import { esc, safeUrl, chips, paragraphs } from '../lib/html.js';
+import { esc, safeUrl, chips, paragraphs, sizeAttrs } from '../lib/html.js';
 import { layout } from '../partials/layout.js';
 import { localBusiness, breadcrumb, serviceList } from '../lib/seo.js';
 
@@ -14,7 +14,7 @@ function prestaCard(p, site) {
   return `
 <article class="presta" id="${esc(p.id)}" aria-labelledby="${esc(p.id)}-titre">
   <figure class="presta-media">
-    ${p.image ? `<img src="${safeUrl(p.image)}" alt="${esc(p.imageAlt || p.titre)}" loading="lazy" decoding="async" width="800" height="600">` : ''}
+    ${p.image ? `<img src="${safeUrl(p.image)}" alt="${esc(p.imageAlt || p.titre)}" loading="lazy" decoding="async" ${sizeAttrs(p, 800, 600)}>` : ''}
   </figure>
   <div class="presta-body">
     <h2 class="presta-title" id="${esc(p.id)}-titre">${esc(p.titre)}</h2>

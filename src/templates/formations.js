@@ -1,4 +1,4 @@
-import { esc, safeUrl, chips, listItems } from '../lib/html.js';
+import { esc, safeUrl, chips, listItems, sizeAttrs } from '../lib/html.js';
 import { layout } from '../partials/layout.js';
 import { localBusiness, breadcrumb, courseList } from '../lib/seo.js';
 
@@ -16,22 +16,24 @@ function formationCard(f, site) {
 
   return `
 <article class="formation${f.image ? ' has-image' : ''}" id="${esc(f.id)}" aria-labelledby="${esc(f.id)}-titre">
-  ${f.image ? `<figure class="formation-media"><img src="${safeUrl(f.image)}" alt="${esc(f.imageAlt || f.titre)}" loading="lazy" decoding="async" width="1200" height="520"></figure>` : ''}
-  <div class="formation-head">
-    <h2 class="formation-title" id="${esc(f.id)}-titre">${esc(f.titre)}</h2>
-    ${f.sousTitre ? `<p class="formation-sub">${esc(f.sousTitre)}</p>` : ''}
-    ${meta.length ? `<p class="presta-meta">${meta.join('')}</p>` : ''}
-  </div>
-  <div class="formation-blocs">
-    ${(f.blocs || []).map((b) => `
-    <div class="formation-bloc">
-      <h3>${esc(b.titre)}</h3>
-      <ul>${listItems(b.points)}</ul>
-    </div>`).join('')}
-  </div>
-  <div class="formation-foot">
-    ${f.note ? `<p class="formation-note">${esc(f.note)}</p>` : '<span></span>'}
-    <a class="btn btn-primary" href="${mailto(site, f)}">Demander les infos</a>
+  ${f.image ? `<figure class="formation-media"><img src="${safeUrl(f.image)}" alt="${esc(f.imageAlt || f.titre)}" loading="lazy" decoding="async" ${sizeAttrs(f, 800, 1000)}></figure>` : ''}
+  <div class="formation-content">
+    <div class="formation-head">
+      <h2 class="formation-title" id="${esc(f.id)}-titre">${esc(f.titre)}</h2>
+      ${f.sousTitre ? `<p class="formation-sub">${esc(f.sousTitre)}</p>` : ''}
+      ${meta.length ? `<p class="presta-meta">${meta.join('')}</p>` : ''}
+    </div>
+    <div class="formation-blocs">
+      ${(f.blocs || []).map((b) => `
+      <div class="formation-bloc">
+        <h3>${esc(b.titre)}</h3>
+        <ul>${listItems(b.points)}</ul>
+      </div>`).join('')}
+    </div>
+    <div class="formation-foot">
+      ${f.note ? `<p class="formation-note">${esc(f.note)}</p>` : '<span></span>'}
+      <a class="btn btn-primary" href="${mailto(site, f)}">Demander les infos</a>
+    </div>
   </div>
 </article>`;
 }

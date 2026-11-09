@@ -145,6 +145,37 @@ test('les sections de l’accueil suivent l’ordre du contenu, avec ou sans ima
   fs.rmSync(content, { recursive: true, force: true });
 });
 
+test('les images portent leurs vraies dimensions (pas de recadrage imposé)', async () => {
+  const content = fixtureContent((f, data) => {
+    if (f === 'formations.json') { data.items[0].image = 'images/bol.webp'; data.items[0].imageAlt = 'Bol'; }
+    if (f === 'prestations.json') data.items[0].image = 'images/og-image.jpg';
+  });
+  const out = tmpDir('mda-dist-');
+  await build({ out, contentDir: content, quiet: true });
+  const index = fs.readFileSync(path.join(out, 'index.html'), 'utf8');
+  const formations = fs.readFileSync(path.join(out, 'formations.html'), 'utf8');
+  const presta = fs.readFileSync(path.join(out, 'prestations.html'), 'utf8');
+  // bol.webp fait 1200×1594 (portrait), og-image.jpg 1200×630 (paysage)
+  assert.match(index, /<img src="images\/bol\.webp"[^>]*width="1200" height="1594"/);
+  assert.match(formations, /<figure class="formation-media"><img src="images\/bol\.webp"[^>]*width="1200" height="1594"/);
+  assert.match(formations, /class="formation has-image"[\s\S]*?<div class="formation-content">/);
+  assert.match(presta, /<img src="images\/og-image\.jpg"[^>]*width="1200" height="630"/);
+  // Le vrai contenu n'est pas modifié par le build
+  assert.doesNotMatch(fs.readFileSync(path.join(content, 'formations.json'), 'utf8'), /"_w"/);
+  fs.rmSync(out, { recursive: true, force: true });
+  fs.rmSync(content, { recursive: true, force: true });
+});
+
+test('une image introuvable ne casse pas le build (dimensions par défaut)', async () => {
+  const content = fixtureContent((f, data) => { if (f === 'prestations.json') data.items[0].image = 'images/uploads/absente.webp'; });
+  const out = tmpDir('mda-dist-');
+  await build({ out, contentDir: content, quiet: true });
+  const presta = fs.readFileSync(path.join(out, 'prestations.html'), 'utf8');
+  assert.match(presta, /<img src="images\/uploads\/absente\.webp"[^>]*width="800" height="600"/);
+  fs.rmSync(out, { recursive: true, force: true });
+  fs.rmSync(content, { recursive: true, force: true });
+});
+
 test('un contenu invalide fait échouer le build avec un message clair', async () => {
   const content = fixtureContent((f, data) => {
     if (f === 'prestations.json') data.items.push({ id: data.items[0].id, titre: 'Doublon' });

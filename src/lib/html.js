@@ -61,3 +61,10 @@ export function when(cond, fn) {
 export function jsonLd(obj) {
   return JSON.stringify(obj).replace(/</g, '\\u003c');
 }
+
+/** Attributs width/height d'une image : vraies dimensions si connues (_w/_h), sinon valeurs par défaut. */
+export function sizeAttrs(item, fallbackW, fallbackH) {
+  const w = Number(item?._w) || fallbackW;
+  const h = Number(item?._h) || fallbackH;
+  return `width="${w}" height="${h}"`;
+}

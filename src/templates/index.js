@@ -1,4 +1,4 @@
-import { esc, safeUrl, chips } from '../lib/html.js';
+import { esc, safeUrl, chips, sizeAttrs } from '../lib/html.js';
 import { layout } from '../partials/layout.js';
 import { localBusiness } from '../lib/seo.js';
 
@@ -11,7 +11,7 @@ function splitSection(section, index) {
 <section class="split${flip}" id="${esc(section.id)}" aria-labelledby="${esc(section.id)}-titre">
   <div class="split-card${hasImage ? '' : ' split-card--text'}">
     ${hasImage ? `<figure class="split-media">
-      <img src="${safeUrl(section.image)}" alt="${esc(section.imageAlt || '')}"${section.imageContain ? ' class="is-contain"' : ''} loading="lazy" decoding="async" width="800" height="1000">
+      <img src="${safeUrl(section.image)}" alt="${esc(section.imageAlt || '')}"${section.imageContain ? ' class="is-contain"' : ''} loading="lazy" decoding="async" ${sizeAttrs(section, 800, 1000)}>
     </figure>` : ''}
     <div class="split-body">
       ${section.kicker ? `<p class="kicker">${esc(section.kicker)}</p>` : ''}

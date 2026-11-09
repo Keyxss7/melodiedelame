@@ -12,6 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { imageSize } from './src/lib/image-size.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const SRC = path.join(ROOT, 'src');
@@ -117,9 +118,28 @@ function copyDir(from, to) {
   }
 }
 
+/**
+ * Ajoute à chaque élément illustré ses vraies dimensions (_w, _h), lues dans src/.
+ * Les templates les écrivent dans le HTML : la photo garde son format, sans recadrage
+ * ni saut de mise en page au chargement. Rien n'est écrit dans content/.
+ */
+export function annotateImages(data, srcDir = SRC) {
+  const withImages = [
+    ...(data.accueil.sections || []),
+    ...(data.prestations.items || []),
+    ...(data.formations.items || []),
+  ];
+  for (const item of withImages) {
+    if (!item.image || /^(https?:|data:)/.test(item.image)) continue;
+    const size = imageSize(path.join(srcDir, item.image));
+    if (size) { item._w = size.width; item._h = size.height; }
+  }
+  return data;
+}
+
 export async function build({ out = path.join(ROOT, 'dist'), contentDir = CONTENT, quiet = false } = {}) {
   const started = Date.now();
-  const data = loadContent(contentDir);
+  const data = annotateImages(loadContent(contentDir));
   const pages = await renderPages(data);
 
   fs.rmSync(out, { recursive: true, force: true });
